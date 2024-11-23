@@ -1,27 +1,18 @@
 // src/components/ReportLog.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "./ReportLog.css"
+import { apiGetAllUser } from '../api/admin';
 
 const ReportLog = () => {
-  // Dữ liệu mẫu cho bảng log
-  const logData = [
-    {
-      "userId": 2,
-      "username": "nguyen dang khoa",
-      "password": "123456",
-      "email": "ndk@gmail.com",
-      "createdDate": "2024-11-17T12:47:56.0272123",
-      "lastLogin": "0001-01-01T00:00:00"
-    },
-    {
-      "userId": 4,
-      "username": "Võ Văn Hùng",
-      "password": "123456",
-      "email": "vvh@gmail.com",
-      "createdDate": "2024-11-17T14:46:16.6903919",
-      "lastLogin": "0001-01-01T00:00:00"
+  const [logData, setlogData] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await apiGetAllUser();
+      console.log(res);
+      setlogData(() => res.data);
     }
-  ];
+    fetchData();
+  }, []);
 
   return (
     <div className="report-log">
@@ -38,7 +29,7 @@ const ReportLog = () => {
             </tr>
           </thead>
           <tbody>
-            {logData.map((log, index) => (
+            {logData && logData.map((log, index) => (
               <tr key={log.userId}>
                 <td>{index + 1}</td>
                 <td>{log.username}</td>

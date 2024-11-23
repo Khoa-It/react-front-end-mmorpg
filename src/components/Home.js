@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import UserList from "./UserList";
 import ReportLog from "./ReportLog";
 import "../App.css";
-import { apiGetAllUser } from "../api/admin";
-
-
+import { apiBanUser, apiGetAllUser } from "../api/admin";
 
 
 const Home = () => {
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +23,15 @@ const Home = () => {
 
   const [showReport, setShowReport] = useState(false);
 
-  const deleteUser = (id) => {
-    alert('xóa user');
+  const deleteUser = async (id) => {
+    const res = await apiBanUser(id);
+    if(!res.data){
+      alert('Xóa tài khoản thất bại');
+    }else{
+      alert('Xóa tài khoản thành công');
+      const res = await apiGetAllUser();
+      setUsers(() => res.data);
+    }
   };
 
   return (
